@@ -1,0 +1,169 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+ <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
+
+    <style>
+    body {
+     background-image: url({% static 's11.jpg' %});
+     background-size: 100%;
+     font-family: "Lato";
+    }
+  </style>
+
+    <title>Liver disease predictor</title>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Liver Disease Classifier</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/form">LiverCheck</a>
+          </li>
+
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container" style="font-size:20;font-weight: bold;">
+    <main>
+      <div class="py-5 text-center">
+        <h2>Input form</h2>
+        <p class="lead">Enter your LFT and urine test details.</p>
+      </div>
+
+
+       <form  method="post" action="/predict/" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-6" align="center">
+          <label for="input1" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="input1" >
+        </div>
+        <div class="col-md-6" align="center">
+          <label for="input2" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="input2" >
+        </div>
+
+        <div class="col-md-3" align="center">
+          <label for="age" class="form-label">Age</label>
+          <input type="number" class="form-control" id="age" name="age" min="0">
+        </div>
+        <div class="col-md-3" align="center">
+          <label for="gender" class="form-label">Gender</label>
+          <select id="gender"  name="gender" class="form-select">
+            <option selected>Choose...</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="col-md-3" align="center">
+          <label for="albumin" class="form-label">Albumin</label>
+          <input type="decimal" class="form-control" id="albumin" name="albumin" min="0">
+        </div>
+        <div class="col-md-3" align="center">
+          <label for="alkaline_phosphatase" class="form-label">Alkaline Phosphatase</label>
+          <input type="decimal" class="form-control" id="alkaline_phosphatase" name="alkaline_phosphatase" min="0">
+        </div>
+        <div class="col-md-3" align="center">
+          <label for="alanine_aminotransferase" class="form-label">Alanine Aminotransferase</label>
+          <input type="decimal" class="form-control" id="alanine_aminotransferase" name="alanine_aminotransferase" min="0">
+        </div>
+        <div class="col-md-3" align="center">
+          <label for="aspartate_aminotransferase" class="form-label">Aspartate Aminotransferase</label>
+          <input type="decimal" class="form-control" id="aspartate_aminotransferase" name="aspartate_aminotransferase" min="0">
+        </div>
+        <div class="col-md-3" align="center">
+          <label for="bilirubin" class="form-label">Bilirubin</label>
+          <input type="decimal" class="form-control" id="bilirubin" name="bilirubin" min="0">
+        </div>
+
+        <div class="col-md-3" align="center">
+          <label for="cholinesterase" class="form-label">Cholinesterase</label>
+          <input type="decimal" class="form-control" id="cholinesterase"  name="cholinesterase" min="0">
+        </div>
+
+        <div class="col-md-3" align="center">
+          <label for="cholesterol" class="form-label">Cholesterol</label>
+          <input type="decimal" class="form-control" id="cholesterol" name="cholesterol" min="0">
+        </div>
+
+        <div class="col-md-3" align="center">
+          <label for="creatinine" class="form-label">Creatinine</label>
+          <input type="decimal" class="form-control" id="creatinine" name="creatinine" min="0">
+        </div>
+
+         <div class="col-md-3" align="center">
+          <label for="gamma_glutamyl_transferase"  class="form-label">Gamma Glutamyl Transferase </label>
+          <input type="decimal" class="form-control" id="gamma_glutamyl_transferase" name="gamma_glutamyl_transferase" min="0">
+        </div>
+
+
+         <div class="col-md-3" align="center">
+          <label for="protein" class="form-label">Protein </label>
+          <input type="decimal" class="form-control" id="protein" name="protein" min="0">
+        </div>
+
+           <div class="col-md-3" align="center">
+          <label for="model" class="form-label">Model</label>
+          <select id="model" name="model" class="form-select">
+            <option selected>Choose...</option>
+            <option>Random Forest</option>
+            <option>Logistic Regression</option>
+              <option>SVM</option>
+            <option>GaussianNB</option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              Please check your details.
+            </label>
+          </div>
+        </div>
+
+          <div class="d-grid gap-2 col-6 mx-auto">
+                  <input class="btn btn-success btn-block" class="col-md-3"  type="submit">
+          </div>
+
+      </form>
+
+
+      <div>
+       <h3 style="color:white;" align="center">{{output}}</h3>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+ </body>
+
+</html>
